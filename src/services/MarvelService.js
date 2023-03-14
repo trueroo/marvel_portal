@@ -23,9 +23,16 @@ class MarvelService {
     }
 
     _transformCharacter = (char) => {
+        const limitChars = 100
         return {
             name: char.name,
-            description: char.description ? `${char.description.substring(0, 150)}...` : 'There is no description for this character',
+            description: !char.description
+                ? 'There is no description for this character'
+                : char.description.length < limitChars
+                    ? char.description
+                    : char.description.slice(-1, limitChars) === '.'
+                        ? `${char.description.slice(0, limitChars)}..`
+                        : `${char.description.slice(0, limitChars)}...`,
             thumbnail: char.thumbnail.path + '.' + char.thumbnail.extension,
             homepage: char.urls[0].url,
             wiki: char.urls[1].url
